@@ -2,12 +2,13 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
-dotenv.config();
 const bodyParser = require('body-parser');
 const db = require('./src/config/db.config');
 
-// Initialisation de l'application
+// Charger les variables d'environnement
 dotenv.config();
+
+// Initialisation de l'application
 const app = express();
 
 // Middlewares
@@ -24,13 +25,16 @@ db.connect((err) => {
     console.log('Connexion réussie à la base de données MySQL');
 });
 
-// Import des routes
+// Import des routes (Après avoir défini `app`)
 const eventRoutes = require('./src/routes/events.routes');
 const mediaRoutes = require('./src/routes/media.routes');
 const authRoutes = require('./src/routes/auth.routes');
+const userRoutes = require('./src/routes/user.routes');  // ✅ Ajout des routes user
 
+// Définition des routes
 app.use('/api/events', eventRoutes);
 app.use('/api/media', mediaRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);  // ✅ Ajout de cette ligne après l'initialisation
 
 module.exports = app; // Export de l'application
